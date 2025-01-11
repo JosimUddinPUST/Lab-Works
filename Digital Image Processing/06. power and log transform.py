@@ -1,41 +1,46 @@
+import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
 
-image = Image.open('lab_image.jpg').convert('RGB')
+# Load the image using OpenCV
+image = cv2.imread('lab_image.jpg')
 
-image_array=np.array(image)
+# Convert the image from BGR to RGB
+image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 # Define the gamma value
 gamma = 1.9
 
 # Apply power-law (gamma) transformation
-c = 255 / (np.max(image_array) ** gamma)  # Calculate scaling constant
-power_image = c * (image_array ** gamma)   # Apply the transformation
+c = 255 / (np.max(image_rgb) ** gamma)  # Calculate scaling constant
+power_image = c * (image_rgb ** gamma)  # Apply the transformation
 
 # Convert to uint8 for display
 power_image = np.array(power_image, dtype=np.uint8)
 
-log_c=255/(np.log(1+np.max(image_array)))
+# Apply log transformation
+log_c = 255 / (np.log(1 + np.max(image_rgb)))
+log_image = log_c * (np.log(1 + image_rgb))
 
-log_image= log_c* (np.log(1+ image_array))
+# Convert to uint8 for display
+log_image = np.array(log_image, dtype=np.uint8)
 
-log_image=np.array(log_image,dtype=np.uint8)
+# Plot the original, power-law transformed, and log transformed images
+plt.figure(figsize=(15, 5))
 
-plt.figure(figsize=(12,6))
-plt.subplot(1,3,1)
-plt.imshow(image,cmap="gray")
-plt.title("original Image")
+plt.subplot(1, 3, 1)
+plt.title("Original Image")
+plt.imshow(image_rgb)
 plt.axis("off")
 
-plt.subplot(1,3,2)
-plt.imshow(power_image,cmap="gray")
-plt.title(f"Power Image Gamma= ({gamma})")
+plt.subplot(1, 3, 2)
+plt.title("Power-law (Gamma) Transformation")
+plt.imshow(power_image)
 plt.axis("off")
 
-plt.subplot(1,3,3)
-plt.imshow(log_image,cmap="gray")
-plt.title("Log Image ")
+plt.subplot(1, 3, 3)
+plt.title("Log Transformation")
+plt.imshow(log_image)
 plt.axis("off")
 
 plt.show()
