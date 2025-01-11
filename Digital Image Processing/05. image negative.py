@@ -1,23 +1,25 @@
-from PIL import Image
+import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
-image = Image.open('lab_image.jpg').convert('RGB')
+# Load the image using OpenCV
+image = cv2.imread('lab_image.jpg')
 
-image_array=np.array(image)
+# Convert the image from BGR to RGB
+image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-negative_image_array= 255-image_array
+# Create the negative image
+negative_image = 255 - image_rgb
 
+# Plot the original and negative images
+plt.figure(figsize=(10, 5))
 
-negative_image=Image.fromarray(negative_image_array)
-
-plt.figure(figsize=(10,5))
-plt.subplot(1,2,1)
+plt.subplot(1, 2, 1)
 plt.title("Original Image")
-plt.imshow(image)
+plt.imshow(image_rgb)
 plt.axis("off")
 
-plt.subplot(1,2,2)
+plt.subplot(1, 2, 2)
 plt.title("Negative Image")
 plt.imshow(negative_image)
 plt.axis("off")

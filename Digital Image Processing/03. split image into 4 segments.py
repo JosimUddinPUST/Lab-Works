@@ -6,12 +6,12 @@ print(cv2.__version__)
 
 
 # Load the image
-image = Image.open('lab_image.jpg')
-# Convert image to a numpy array
-image_array = np.array(image)
+# image = Image.open('lab_image.jpg')
+image_array=cv2.imread('lab_image.jpg')
 
 # Get the dimensions of the image
 height, width, _ = image_array.shape
+
 
 # Split the image into 4 segments (top-left, top-right, bottom-left, bottom-right)
 top_left = image_array[0:height//2, 0:width//2]
